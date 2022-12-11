@@ -6,7 +6,7 @@ library(shinythemes)
 data <- read.csv("https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv")
 
 # Define UI for application that draws a histogram
-ui <- shinyUI(fluidPage(theme = shinytheme("simplex"),
+ui <- fluidPage(theme = shinytheme("simplex"),
   navbarPage("Co2 emission",
   tabPanel("Intro",
     sidebarLayout(
@@ -21,37 +21,22 @@ ui <- shinyUI(fluidPage(theme = shinytheme("simplex"),
           textOutput("diff"),
           h3("The average value of co2 across all the counties in 2018"),
           tableOutput("avg")
-        )
-               )
+                  )
+                )
           ),
     tabPanel("Plots",
               sidebarLayout(
                 sidebarPanel(
-                  sliderInput(
-                  inputId = "year",
-                  label = "Date",
-                  min = 1750,
-                  max = 2021,
-                  value = 1880
-                )
+                    uiOutput("selectyear"),
+                    uiOutput("wohaha"),
                 ),
           mainPanel(
-            plotOutput("ooo"),
+            plotlyOutput("ooo"),
             p("This chart present the average number of co2 release around the globe. By selecting the years in the input menu, one could see the data of co2 rate in each country. Meanwhile charts could show the audience how the number has increased significnatly throughout the years. "),
-            selectInput(
-              inputId = "haha",
-                       label = "Choose a country",
-                       choices = c("United State","China","Japan"),
-                       selected = "United State",
-            ),
-              tableOutput("second")
+            plotlyOutput("second"),
+            p("Similar to the previous graph, the line chart shows the CO2 rate according to the population in each country.")
+            )
             )
           )
-          
-             
-              )  
-             
-              ) 
-)
-)
-
+        )
+  )

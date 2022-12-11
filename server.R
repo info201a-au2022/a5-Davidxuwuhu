@@ -55,44 +55,59 @@ nwda <- da %>%
   
 
 
-bargraph <- reactive({
-  yearchart <- nwda %>% 
-    filter(year %in% input$year) 
-  
-  ggplot(data = nwda) + 
-  geom_bar(mapping = aes(x = country,
-                         y = co2),
-                         color = "Green",
-                         alpha = 0.3) + 
-             labs(x = "Countries",
-                 y = "Carbon Dioxide",
-                 title = "The Carbon Dioxide number emission rate by each country",
-                 caption = "This graph show the CO2 number in diffferent countries, group by years."
-           
-                 )
-  })
 
-
-
- 
   
   
 #SERVER
 
 server <- function(input, output){
+  
+  output$selectyear <- renderUI({
+    selectInput(inputId = "year",
+                label = "Date",
+                min = 1750,
+                max = 2021,
+                value = 1880)
+  })
+  
+  output$wohaha <- renderUI({
+    selectInput(inputId = "haha",
+                label = "Choose a country",
+                choices = c("United State","China","Japan"),
+                selected = "United State")
+  })
+  
+  
+  bargraph <- reactive({
+    yearchart <- nwda %>% 
+      filter(year %in% input$year) 
+    
+    ggplot(data = yearchart) + 
+      geom_bar(mapping = aes(x = country,
+                             y = co2),
+               color = "Green",
+               alpha = 0.3) + 
+      labs(x = "Countries",
+           y = "Carbon Dioxide",
+           title = "The Carbon Dioxide number emission rate by each country",
+           caption = "This graph show the CO2 number in diffferent countries, group by years."
+           
+      )
+  })
+  
   seconddata <- reactive({
     sec <- hahaha %>% 
       filter(country %in% input$country)
-  second <- ggplot() +
-    geom_smooth(data = hahaha, mapping = aes(x = population , 
-                                             y = co2),
-                labs(title = "Carbon Dioxide rate according to population in each country" ,
-                     x = "Population of each country" , 
-                     y = "Cardon Dioxide" ,
-                     caption = "Black to white injailed ratio over the years from 1991 to 2018"
-                )
-    )
-  
+    second <- ggplot() +
+      geom_smooth(data = sec, mapping = aes(x = population, 
+                                               y = co2),
+                  labs(title = "Carbon Dioxide rate according to population in each country" ,
+                       x = "Population of each country" , 
+                       y = "Cardon Dioxide" ,
+                       caption = "Black to white injailed ratio over the years from 1991 to 2018"
+                  )
+      )
+    
   })
   
   
@@ -108,12 +123,12 @@ server <- function(input, output){
     diff <- shinjibestta
   })
   
-  output$ooo <- renderPlot({
-    bargraph
+  output$ooo <- renderPlotly({
+    (bargraph)
+  })
+  
+  output$second <- renderPlotly({
+    (seconddata)
   })
 }
 
-
-#output$pie_chart <- renderPlot({
-#  return(build_pie(fiber_in_state))
-#})

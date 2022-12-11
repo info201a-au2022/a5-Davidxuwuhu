@@ -1,0 +1,14 @@
+name: a5-Davidxuwuhu
+title: a5-Davidxuwuhu
+username:
+account: davidxuwuhu
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 7866470
+bundleId: 6622505
+url: https://davidxuwuhu.shinyapps.io/a5-Davidxuwuhu/
+when: 1670745551.85827
+lastSyncTime: 1670745551.8583
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .RData|LICENSE|README.md
