@@ -46,12 +46,10 @@ shinjithebest2 <- da %>%
 
 shinjibestta <- paste(abs(shinjithebest - shinjithebest2), "million tonnes")
 
-hahaha <- da %>% 
-  select(country, co2, population)
-  
+
 
 nwda <- da %>% 
-  select(country, year, co2)
+  filter(year %in% (2000:2020))
   
 
 
@@ -63,33 +61,23 @@ nwda <- da %>%
 server <- function(input, output){
 
 
-    
-   wu <- ggplot(data = nwda) + 
-      geom_col(mapping = aes(x = country,
-                             y = co2),
-               color = "Green") + 
-      labs(x = "Countries",
+chart <- reactive({
+  chartdata <- nwda %>% 
+    filter(country %in% input$haha) 
+  
+   wu <- ggplot(data = chartdata) + 
+      geom_line(mapping = aes_string(
+                             x = input$mu,
+                             y = input$gdporpopu),
+               color = "pink") + 
+      labs(x = "Selected varuables: gdp or population",
            y = "Carbon Dioxide",
            title = "The Carbon Dioxide number emission rate by each country",
-           caption = "This graph show the CO2 number in diffferent countries, group by years."
+           caption = "This graph show the CO2 number in diffferent countries, showing the growth of CO2 in relationship with gdp or population. The data continas information from 2000 to 2020"
            
       )
-
-
-  
-  seconddata <- reactive({
-    sec <- hahaha %>% 
-      filter(country %in% input$haha)
- thesec <- ggplot(data = hahaha) +
-    geom_point(mapping = aes(x = population, 
-                            y = co2)) +
-                  labs(x = "Population of each country" , 
-                       y = "Cardon Dioxide" ,
-                       title = "Carbon Dioxide rate according to population in each country",
-                       caption = "Black to white injailed ratio over the years from 1991 to 2018"
-                  )
-  return(thesec)
-  })
+   return(wu)
+})
 
   
   output$avg <- renderTable({
@@ -104,12 +92,9 @@ server <- function(input, output){
     diff <- shinjibestta
   })
   
-  output$ooo <- renderPlot({
-    wu
+  output$ooo <- renderPlotly({
+    chart()
   })
-  
-  output$second <- renderPlot({
-    seconddata
-  })
-}
+
+  }
 
