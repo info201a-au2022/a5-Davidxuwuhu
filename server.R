@@ -61,55 +61,36 @@ nwda <- da %>%
 #SERVER
 
 server <- function(input, output){
-  
-  output$selectyear <- renderUI({
-    selectInput(inputId = "year",
-                label = "Date",
-                min = 1750,
-                max = 2021,
-                value = 1880)
-  })
-  
-  output$wohaha <- renderUI({
-    selectInput(inputId = "haha",
-                label = "Choose a country",
-                choices = c("United State","China","Japan"),
-                selected = "United State")
-  })
-  
-  
-  bargraph <- reactive({
-    yearchart <- nwda %>% 
-      filter(year %in% input$year) 
+
+
     
-    ggplot(data = yearchart) + 
-      geom_bar(mapping = aes(x = country,
+   wu <- ggplot(data = nwda) + 
+      geom_col(mapping = aes(x = country,
                              y = co2),
-               color = "Green",
-               alpha = 0.3) + 
+               color = "Green") + 
       labs(x = "Countries",
            y = "Carbon Dioxide",
            title = "The Carbon Dioxide number emission rate by each country",
            caption = "This graph show the CO2 number in diffferent countries, group by years."
            
       )
-  })
+
+
   
   seconddata <- reactive({
     sec <- hahaha %>% 
-      filter(country %in% input$country)
-    second <- ggplot() +
-      geom_smooth(data = sec, mapping = aes(x = population, 
-                                               y = co2),
-                  labs(title = "Carbon Dioxide rate according to population in each country" ,
-                       x = "Population of each country" , 
+      filter(country %in% input$haha)
+ thesec <- ggplot(data = hahaha) +
+    geom_point(mapping = aes(x = population, 
+                            y = co2)) +
+                  labs(x = "Population of each country" , 
                        y = "Cardon Dioxide" ,
+                       title = "Carbon Dioxide rate according to population in each country",
                        caption = "Black to white injailed ratio over the years from 1991 to 2018"
                   )
-      )
-    
+  return(thesec)
   })
-  
+
   
   output$avg <- renderTable({
     avg <- Avgc02
@@ -123,12 +104,12 @@ server <- function(input, output){
     diff <- shinjibestta
   })
   
-  output$ooo <- renderPlotly({
-    (bargraph)
+  output$ooo <- renderPlot({
+    wu
   })
   
-  output$second <- renderPlotly({
-    (seconddata)
+  output$second <- renderPlot({
+    seconddata
   })
 }
 

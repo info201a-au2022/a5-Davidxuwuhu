@@ -27,13 +27,22 @@ ui <- fluidPage(theme = shinytheme("simplex"),
     tabPanel("Plots",
               sidebarLayout(
                 sidebarPanel(
-                    uiOutput("selectyear"),
-                    uiOutput("wohaha"),
+                  sliderInput(inputId = "years",
+                              label = "Date:",
+                              min = 1750,
+                              max = 2021, 
+                              value = 1880),
+                  
+                  selectInput(inputId = "haha",
+                              label = "Choose a country:",
+                              choices = c("United State","China","Japan"),
+                              selected = "United State")
+                  
                 ),
           mainPanel(
-            plotlyOutput("ooo"),
+            plotOutput("ooo"),
             p("This chart present the average number of co2 release around the globe. By selecting the years in the input menu, one could see the data of co2 rate in each country. Meanwhile charts could show the audience how the number has increased significnatly throughout the years. "),
-            plotlyOutput("second"),
+            plotOutput("second"),
             p("Similar to the previous graph, the line chart shows the CO2 rate according to the population in each country.")
             )
             )
